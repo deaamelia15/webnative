@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabel Form</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link ke file CSS jika diperlukan -->
+</head>
+<body>
+    <h1>Form Tabel</h1>
+
+    <?php
+    // Cek apakah form telah dikirim
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Ambil data dari formulir
+        $nama = htmlspecialchars($_POST['nama']);
+        $email = htmlspecialchars($_POST['email']);
+        $telepon = htmlspecialchars($_POST['telepon']);
+
+        // Tampilkan data yang diterima (untuk debugging)
+        echo "<p><strong>Data yang dikirim:</strong></p>";
+        echo "<p>Nama: $nama</p>";
+        echo "<p>Email: $email</p>";
+        echo "<p>Telepon: $telepon</p>";
+
+        // Tambahkan logika untuk menyimpan ke database atau memproses data
+    }
+    ?>
+
+    <form method="POST" action="">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Telepon</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="nama" placeholder="Masukkan nama" required></td>
+                    <td><input type="email" name="email" placeholder="Masukkan email" required></td>
+                    <td><input type="tel" name="telepon" placeholder="Masukkan nomor telepon" required></td>
+                    <td><button type="submit">Kirim</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</body>
+</html>
