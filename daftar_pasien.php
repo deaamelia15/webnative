@@ -140,7 +140,7 @@ $result = $conn->query($query);
             <input type="text" id="alamat" name="alamat" required>
         </div>
         <button type="submit">Daftar</button>
-        <button type="button" onclick="window.location.href='dashboard.php';">Kembali</button>
+        <button type="button" onclick="window.location.href='index.php';">Kembali</button>
     </form>
 
 </body>

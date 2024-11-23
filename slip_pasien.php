@@ -156,7 +156,7 @@ if ($result->num_rows > 0) {
 
         <!-- Button to go back -->
         <div style="text-align: center;">
-            <a href="dashboard.php" class="back-button">Kembali ke Home</a>
+            <a href="index.php" class="back-button">Kembali ke Home</a>
         </div>
     </div>
 
