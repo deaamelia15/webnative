@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssdssss", $nik, $nama_pasien, $berat_badan, $tinggi_badan, $tekanan_darah, $keluhan, $diagnosis);
             if ($stmt->execute()) {
-                header("Location: view_screening.php");
+                header("Location: data_screening.php");
                 exit();
             } else {
                 $error_message = "Gagal menyimpan data: " . $stmt->error;

@@ -31,7 +31,7 @@
                 <a href="daftar_pasien.php" class="button">Daftar Sekarang</a> <!-- Tautan Daftar -->
             </div>
             <div class="logo">
-                <img src="logo kinasih.jpg" alt="Logo Klinik Kinasih">
+                <img src="logo klinik kinasih.jpg" alt="Logo Klinik Kinasih" style="width: 400px; height: 400px; position: relative; left: 70px;">
             </div>
         </div>
     </main>

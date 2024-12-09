@@ -192,15 +192,20 @@ if ($result && $result->num_rows > 0) {
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="profile">
-            <img src="logo kinasih.jpg" alt="Profile Picture" class="profile-img">
+            <img src="logo klinik kinasih.jpg" alt="Profile Picture" class="profile-img">
             <h3>Username</h3>
             <p>Staff Administrasi</p>
         </div>
         <nav>
             <ul>
                 <li class="active"><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="daftar_pasien.php">List Pendaftaran Pasien</a></li>
-                <li><a href="data_pasien.php">Data Scrinning Pasien</a></li>
+                <li><a href="daftar_pasien.php">Pendaftaran Pasien</a></li>
+                <li><a href="data_pasien.php">Input Data Scrinning Pasien</a></li>
+                <li><a href="data_screening.php">Data Scrinning Pasien</a></li>
+               <li>
+                <li><a href="rekam_medis.php">Input Rekam Medis Pasien</a></li>
+               <li>
+                <li><a href="hasil_rekam_medis.php">Hasil Rekam Medis Pasien</a></li>
                <li>
     <button type="button" onclick="window.location.href='index.php';" class="btn-back">Kembali</button>
 </li>
