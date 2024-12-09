@@ -48,7 +48,7 @@ if ($result && $result->num_rows > 0) {
         /* Sidebar */
         .sidebar {
             width: 250px;
-            background-color: #b22222; /* Merah */
+            background-color: #cd1111; /* Merah */
             color: #fff;
             height: 100vh;
             position: fixed;
@@ -89,7 +89,7 @@ if ($result && $result->num_rows > 0) {
 
         .sidebar nav ul li a:hover,
         .sidebar nav ul li.active a {
-            background-color: #800000; /* Merah tua */
+            background-color: #900000; /* Merah tua */
         }
 
         /* Main Content */
@@ -106,7 +106,7 @@ if ($result && $result->num_rows > 0) {
         .data-pasien h2 {
             font-size: 22px;
             margin-bottom: 10px;
-            color: #b22222; /* Merah */
+            color: #cd1111; /* Merah */
         }
 
         table {
@@ -125,7 +125,7 @@ if ($result && $result->num_rows > 0) {
         }
 
         table th {
-            background-color: #b22222; /* Merah */
+            background-color: #cd1111; /* Merah */
             color: #fff;
         }
 
@@ -153,20 +153,20 @@ if ($result && $result->num_rows > 0) {
         }
 
         .btn-primary:hover {
-            background-color: #800000; /* Merah tua */
+            background-color: #cd1111;/* Merah tua */
         }
 
         .btn-danger {
-            background-color: #ff6347; /* Tomat */
+            background-color: #cd1111; /* Tomat */
             color: #fff;
         }
 
         .btn-danger:hover {
-            background-color: #cc2900; /* Merah gelap */
+            background-color: #cd1111; /* Merah gelap */
         }
 
         .btn-back {
-        background-color: #b22222; /* Merah */
+        background-color: #cd1111; /* Merah */
         color: #ffffff; /* Putih */
         padding: 10px 20px;
         font-size: 16px;
@@ -178,7 +178,7 @@ if ($result && $result->num_rows > 0) {
     }
 
     .btn-back:hover {
-        background-color: #800000; /* Merah tua */
+        background-color: #cd1111; /* Merah tua */
         transform: scale(1.05); /* Efek memperbesar */
     }
 

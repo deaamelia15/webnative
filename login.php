@@ -10,63 +10,69 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Staff</title>
     <style>
-        /* Reset default styling */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            color: #333;
-        }
+    /* Reset default styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
 
-        /* Login card styling */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f4;
-        }
+/* Login container styling */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
 
-        .login-card {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
+/* Login card styling */
+.login-card {
+    background-color: #fff;
+    padding: 5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
 
-        .text-center {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: #d50000;
-        }
+/* Text styling */
+.text-center {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #cd1111;
+}
 
-        .form-input {
-            width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
+/* Form input styling */
+.form-input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
 
-        .btn-submit {
-            width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 5px;
-            background-color: #d50000;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
+/* Submit button styling */
+.btn-submit {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #cd1111;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-        .btn-submit:hover {
-            background-color: #a80000;
-        }
-    </style>
+.btn-submit:hover {
+    background-color: #800000;
+}
+</style>
 </head>
 <body>
     

@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     h1 {
         text-align: center;
-        color: #e74c3c; /* Warna merah tema utama */
+        color: #cd1111; /* Warna merah tema utama */
     }
 
     form {
@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     input[type="submit"] {
         width: 100%;
         padding: 10px;
-        background-color: #e74c3c; /* Warna merah tombol utama */
+        background-color: #cd1111; /* Warna merah tombol utama */
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         text-align: center;
         margin: 20px 0;
         font-size: 14px;
-        color: #e74c3c; /* Warna merah tema */
+        color: #cd1111; /* Warna merah tema */
     }
 
     .success {

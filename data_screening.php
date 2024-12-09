@@ -76,7 +76,7 @@ if (isset($_GET['delete_id'])) {
 
         h1 {
             text-align: center;
-            color: #b22222;
+            color: #cd1111;
             margin-bottom: 20px;
         }
 
@@ -105,7 +105,7 @@ if (isset($_GET['delete_id'])) {
         }
 
         th {
-            background-color: #b22222;
+            background-color: #cd1111;
             color: white;
             font-weight: bold;
         }
@@ -133,7 +133,7 @@ if (isset($_GET['delete_id'])) {
         }
 
         .btn-delete {
-            background-color: #e74c3c;
+            background-color: #cd1111;
         }
 
         .btn-delete:hover {
@@ -150,7 +150,7 @@ if (isset($_GET['delete_id'])) {
         a {
             display: inline-block;
             padding: 10px 15px;
-            background-color: #b22222;
+            background-color: #cd1111;
             color: white;
             text-decoration: none;
             border-radius: 5px;

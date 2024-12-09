@@ -135,7 +135,7 @@ $result = mysqli_query($conn, $query);
                 ?>
             </tbody>
         </table>
-        <a href="rekam_medis.php" class="btn-back">Kembali ke Input</a>
+        <a href="dashboard.php" class="btn-back">Kembali</a>
     </div>
 </body>
 </html>

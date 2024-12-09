@@ -67,15 +67,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Input Data Screening</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #fff; color: #333; margin: 0; padding: 20px; }
-        h1 { color: #D32F2F; text-align: center; }
+        h1 { color: #cd1111; text-align: center; }
         .form-container { max-width: 600px; margin: auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-left: 10px solid #D32F2F; }
         .form-container h2 { color: #D32F2F; text-align: center; }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; color: #D32F2F; font-weight: bold; margin-bottom: 5px; }
+        .form-group label { display: block; color: #cd1111; font-weight: bold; margin-bottom: 5px; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        .btn-submit { width: 100%; background-color: #D32F2F; color: #fff; border: none; padding: 10px; font-size: 16px; cursor: pointer; border-radius: 4px; }
-        .btn-submit:hover { background-color: #B71C1C; }
-        .error-message { text-align: center; color: #D32F2F; font-weight: bold; }
+        /* Container untuk tombol */
+.button-container {
+    display: flex; /* Menyusun tombol secara fleksibel */
+    gap: 10px; /* Memberikan jarak antar tombol */
+    justify-content: center; /* Memusatkan tombol */
+    margin-top: 20px; /* Memberikan jarak atas */
+}
+
+/* Gaya Dasar Tombol */
+.btn {
+    display: inline-block;
+    text-align: center; /* Memusatkan teks */
+    text-decoration: none; /* Menghapus garis bawah */
+    font-size: 16px; /* Ukuran font */
+    padding: 10px 15px; /* Jarak dalam tombol */
+    border-radius: 5px; /* Membuat sudut melengkung */
+    border: none; /* Menghapus border */
+    color: #fff; /* Warna teks */
+    cursor: pointer; /* Menunjukkan tombol dapat diklik */
+    transition: background-color 0.3s; /* Efek transisi pada hover */
+}
+
+/* Tombol Submit */
+.btn-submit {
+    background-color: #cd1111; /* Warna utama tombol Submit */
+}
+
+.btn-submit:hover {
+    background-color: #B71C1C; /* Warna saat hover tombol Submit */
+}
+
+/* Tombol Kembali */
+.btn-back {
+    background-color: #cd1111; /* Warna utama tombol Kembali */
+}
+
+.btn-back:hover {
+    background-color: #B71C1C; /* Warna saat hover tombol Kembali */
+}
+
     </style>
 </head>
 <body>
@@ -120,7 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="diagnosis">Diagnosis</label>
                 <textarea id="diagnosis" name="diagnosis"></textarea>
             </div>
-            <button type="submit" class="btn-submit">Simpan Data</button>
+            <!-- Tombol Submit dan Tombol Kembali -->
+<div class="button-container">
+    <button type="submit" class="btn btn-submit">Simpan</button>
+    <a href="dashboard.php" class="btn btn-back">Kembali</a>
+</div>
+
         </form>
     </div>
 </body>

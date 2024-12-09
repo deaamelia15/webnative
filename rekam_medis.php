@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .form-container h2 {
             margin-bottom: 20px;
-            color: #b22222;
+            color: #cd1111;
         }
 
         .form-group {
@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .form-group button,
         .form-group a.btn-back {
-            background-color: #b22222;
+            background-color: #cd1111;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="date" id="tanggal_rekam" name="tanggal_rekam" required>
             </div>
             <div class="form-group">
-                <button type="submit">Simpan Data</button>
+                <button type="submit">Simpan</button>
                 <a href="dashboard.php" class="btn-back">Kembali</a>
             </div>
         </form>
