@@ -1,5 +1,5 @@
 <?php
-include 'classes/pasien.php';
+include 'koneksi.php';
 
 $pasien = new pasien();
 

@@ -1,11 +1,5 @@
 <?php
-// Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "klinikk");
-
-// Cek koneksi
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Validasi ID dari parameter URL
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {

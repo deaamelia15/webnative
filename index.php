@@ -32,7 +32,6 @@
                     Untuk mendaftar dan mendapatkan layanan kesehatan yang cepat, aman, dan terpercaya, klik tombol di bawah ini.
                 </p> 
                 <a href="daftar_pasien.php" class="btn btn-primary">Daftar Sekarang</a>
-
             </div>
             <div class="logo">
                 <img src="logo klinik kinasih.jpg" alt="Logo Klinik Kinasih" style="width: 400px; height: 400px; position: relative; left: 70px;">
@@ -45,9 +44,7 @@
         <div class="about-content">
             <div class="about-text">
                 <h2>Tentang Kami</h2>
-                <p>Klinik Pratama Kinasih adalah pusat layanan kesehatan terpercaya dengan lokasi strategis untuk kemudahan akses. 
-                    Kami menawarkan layanan seperti pemeriksaan umum, konsultasi spesialis, vaksinasi, dan laboratorium, 
-                    didukung tenaga medis profesional dan fasilitas modern.
+                <p>Klinik Pratama Kinasih menyediakan layanan pemeriksaan dan pengobatan pasien (umum dan BPJS), pemeriksaan ibu hamil, layanan KIA/KB, imunisasi, serta berbagai pemeriksaan laboratorium seperti hemoglobin, protein urine, gula darah sewaktu, golongan darah, dan triple eliminasi (HIV, sifilis, HBsAg). Klinik ini juga menawarkan layanan USG, swab antigen, cek laboratorium sederhana (kolesterol, asam urat, gula darah sewaktu), khitan/sunat anak, tindik bayi, dan KIR dokter.
                 </p>
                 <p>Buka setiap hari, termasuk akhir pekan, kami berkomitmen memberikan pelayanan kesehatan berkualitas, aman, dan nyaman.</p>
                 <!-- Bagian Mengapa Memilih Kami -->
@@ -101,7 +98,6 @@
         </div>
     </div>
 
-
 <h1>Fasilitas Klinik</h1>
 <div class="container">
     <div class="card">
@@ -125,7 +121,6 @@
         <h3>Ruang Tindakan</h3>
     </div>
 </div>
-
 
     <!-- Bagian Info Klinik -->
     <div class="clinic-info-section">

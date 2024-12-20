@@ -1,6 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "klinikk");
-
+include 'koneksi.php';
 // Jika form dikirim
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_pasien = $_POST['id_pasien'];

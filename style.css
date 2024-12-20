@@ -84,7 +84,6 @@ body {
     transition: background-color 0.3s; /* Efek transisi saat hover */
     z-index: 10;
     position: relative;
-    bottom: 20vh;
 }
 
 /* Tombol Utama */
@@ -127,7 +126,7 @@ body {
     column-gap: 30px;
     height: 700px;
     position: relative;
-    top: 37vh;
+    top: 33vh;
 }
 
 .about-text h2 {
@@ -182,7 +181,7 @@ body {
     transition: transform 0.3s ease;
     position: relative;
     left: 100vh;
-    top: 10vh;
+    top: -5vh;
 }
 
 .about-image img:hover {
@@ -378,4 +377,8 @@ h1 {
     margin: 0;
     font-size: 14px;
     letter-spacing: 0.5px;
+}
+
+ul li {
+    list-style: none;
 }

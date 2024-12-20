@@ -1,14 +1,5 @@
 <?php
-// Koneksi ke database
-$servername = "localhost";
-$username_db = "root";
-$password_db = "";
-$dbname = "klinikk";
-
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Mengambil data berdasarkan ID
 if (isset($_GET['id'])) {
@@ -20,20 +11,23 @@ if (isset($_GET['id'])) {
         $row = $result->fetch_assoc();
     } else {
         echo "<script>alert('Data tidak ditemukan!'); window.location='hasil_rekam_medis.php';</script>";
+        exit;
     }
+} else {
+    echo "<script>alert('ID tidak diberikan!'); window.location='hasil_rekam_medis.php';</script>";
+    exit;
 }
 
 // Proses update data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idPasien = $_POST['id_pasien'];
-    $namaPasien = $_POST['nama_pasien'];
     $poli = $_POST['poli'];
     $namaDokter = $_POST['nama_dokter'];
     $diagnosis = $_POST['diagnosis'];
     $tanggalRekam = $_POST['tanggal_rekam'];
 
     $sqlUpdate = "UPDATE rekam_medis SET 
-                  nama_pasien='$namaPasien', poli='$poli', nama_dokter='$namaDokter', diagnosis='$diagnosis', tanggal_rekam='$tanggalRekam'
+                  poli='$poli', nama_dokter='$namaDokter', diagnosis='$diagnosis', tanggal_rekam='$tanggalRekam'
                   WHERE id_pasien='$idPasien'";
 
     if ($conn->query($sqlUpdate) === TRUE) {
@@ -136,31 +130,31 @@ $conn->close();
         <form action="" method="POST">
             <div class="form-group">
                 <label for="id_pasien">ID Pasien:</label>
-                <input type="text" id="id_pasien" name="id_pasien" value="<?= $row['id_pasien'] ?>" readonly>
+                <input type="text" id="id_pasien" name="id_pasien" value="<?= isset($row['id_pasien']) ? htmlspecialchars($row['id_pasien']) : '' ?>" readonly>
             </div>
             <div class="form-group">
                 <label for="nama_pasien">Nama Pasien:</label>
-                <input type="text" id="nama_pasien" name="nama_pasien" value="<?= $row['nama_pasien'] ?>" required>
+                <input type="text" id="nama_pasien" name="nama_pasien" value="<?= isset($row['nama_pasien']) ? htmlspecialchars($row['nama_pasien']) : '' ?>" required>
             </div>
             <div class="form-group">
                 <label for="poli">Poli:</label>
                 <select id="poli" name="poli" required>
-                    <option value="Umum" <?= $row['poli'] == 'Umum' ? 'selected' : '' ?>>Umum</option>
-                    <option value="Gigi" <?= $row['poli'] == 'Gigi' ? 'selected' : '' ?>>Gigi</option>
-                    <option value="Kandungan" <?= $row['poli'] == 'Kandungan' ? 'selected' : '' ?>>Kandungan</option>
+                    <option value="Umum" <?= isset($row['poli']) && $row['poli'] == 'Umum' ? 'selected' : '' ?>>Umum</option>
+                    <option value="Gigi" <?= isset($row['poli']) && $row['poli'] == 'Gigi' ? 'selected' : '' ?>>Gigi</option>
+                    <option value="Kandungan" <?= isset($row['poli']) && $row['poli'] == 'Kandungan' ? 'selected' : '' ?>>Kandungan</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="nama_dokter">Nama Dokter:</label>
-                <input type="text" id="nama_dokter" name="nama_dokter" value="<?= $row['nama_dokter'] ?>" required>
+                <input type="text" id="nama_dokter" name="nama_dokter" value="<?= isset($row['nama_dokter']) ? htmlspecialchars($row['nama_dokter']) : '' ?>" required>
             </div>
             <div class="form-group">
                 <label for="diagnosis">Diagnosis:</label>
-                <input type="text" id="diagnosis" name="diagnosis" value="<?= $row['diagnosis'] ?>" required>
+                <input type="text" id="diagnosis" name="diagnosis" value="<?= isset($row['diagnosis']) ? htmlspecialchars($row['diagnosis']) : '' ?>" required>
             </div>
             <div class="form-group">
                 <label for="tanggal_rekam">Tanggal Rekam:</label>
-                <input type="date" id="tanggal_rekam" name="tanggal_rekam" value="<?= $row['tanggal_rekam'] ?>" required>
+                <input type="date" id="tanggal_rekam" name="tanggal_rekam" value="<?= isset($row['tanggal_rekam']) ? htmlspecialchars($row['tanggal_rekam']) : '' ?>" required>
             </div>
             <div class="form-group">
                 <button type="submit">Simpan Perubahan</button>

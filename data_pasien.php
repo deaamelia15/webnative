@@ -7,16 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit();
 }
 
-// Koneksi ke database
-$servername = "localhost";
-$username_db = "root";
-$password_db = "";
-$dbname = "klinikk";
-
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Proses input data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($nik) && $berat_badan > 0 && $tinggi_badan > 0 && !empty($tekanan_darah) && !empty($keluhan)) {
         // Validasi apakah NIK ada di tabel daftar_pasien
-        $check_sql = "SELECT id_pasien, nama_pasien FROM daftar_pasien WHERE id_pasien = ?";
+        $check_sql = "SELECT id_pasien, nama_pasien FROM daftar_pasien WHERE nik = ?";
         $stmt = $conn->prepare($check_sql);
         $stmt->bind_param("s", $nik);
         $stmt->execute();
@@ -39,11 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $row = $result->fetch_assoc();
             $nama_pasien = $row['nama_pasien'];
 
-            // Simpan data screening
+            // Simpan data screening ke tabel data_pasien
             $sql = "INSERT INTO data_pasien (nik, nama_pasien, berat_badan, tinggi_badan, tekanan_darah, keluhan, diagnosis) 
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssdssss", $nik, $nama_pasien, $berat_badan, $tinggi_badan, $tekanan_darah, $keluhan, $diagnosis);
+            
             if ($stmt->execute()) {
                 header("Location: data_screening.php");
                 exit();
@@ -57,6 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = "Semua field wajib diisi dengan benar!";
     }
 }
+
+// Ambil data NIK dan nama pasien untuk dropdown
+$query = "SELECT nik, nama_pasien FROM daftar_pasien";
+$result = $conn->query($query);
 ?>
 
 <!DOCTYPE html>
@@ -73,46 +69,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; color: #cd1111; font-weight: bold; margin-bottom: 5px; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        /* Container untuk tombol */
-.button-container {
-    display: flex; /* Menyusun tombol secara fleksibel */
-    gap: 10px; /* Memberikan jarak antar tombol */
-    justify-content: center; /* Memusatkan tombol */
-    margin-top: 20px; /* Memberikan jarak atas */
-}
-
-/* Gaya Dasar Tombol */
-.btn {
-    display: inline-block;
-    text-align: center; /* Memusatkan teks */
-    text-decoration: none; /* Menghapus garis bawah */
-    font-size: 16px; /* Ukuran font */
-    padding: 10px 15px; /* Jarak dalam tombol */
-    border-radius: 5px; /* Membuat sudut melengkung */
-    border: none; /* Menghapus border */
-    color: #fff; /* Warna teks */
-    cursor: pointer; /* Menunjukkan tombol dapat diklik */
-    transition: background-color 0.3s; /* Efek transisi pada hover */
-}
-
-/* Tombol Submit */
-.btn-submit {
-    background-color: #cd1111; /* Warna utama tombol Submit */
-}
-
-.btn-submit:hover {
-    background-color: #B71C1C; /* Warna saat hover tombol Submit */
-}
-
-/* Tombol Kembali */
-.btn-back {
-    background-color: #cd1111; /* Warna utama tombol Kembali */
-}
-
-.btn-back:hover {
-    background-color: #B71C1C; /* Warna saat hover tombol Kembali */
-}
-
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn {
+            display: inline-block;
+            text-align: center;
+            font-size: 16px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-submit {
+            background-color: #cd1111;
+        }
+        .btn-submit:hover {
+            background-color: #B71C1C;
+        }
+        .btn-back {
+            background-color: #cd1111;
+        }
+        .btn-back:hover {
+            background-color: #B71C1C;
+        }
     </style>
 </head>
 <body>
@@ -129,10 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <select id="nik" name="nik" required>
                     <option value="">Pilih NIK</option>
                     <?php
-                    $query = "SELECT id_pasien, nama_pasien FROM daftar_pasien";
-                    $result = $conn->query($query);
                     while ($row = $result->fetch_assoc()) {
-                        echo "<option value='" . htmlspecialchars($row['id_pasien']) . "'>" . htmlspecialchars($row['id_pasien']) . " - " . htmlspecialchars($row['nama_pasien']) . "</option>";
+                        echo "<option value='" . htmlspecialchars($row['nik']) . "'>" . htmlspecialchars($row['nik']) . " - " . htmlspecialchars($row['nama_pasien']) . "</option>";
                     }
                     ?>
                 </select>
@@ -157,12 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="diagnosis">Diagnosis</label>
                 <textarea id="diagnosis" name="diagnosis"></textarea>
             </div>
-            <!-- Tombol Submit dan Tombol Kembali -->
-<div class="button-container">
-    <button type="submit" class="btn btn-submit">Simpan</button>
-    <a href="dashboard.php" class="btn btn-back">Kembali</a>
-</div>
-
+            <div class="button-container">
+                <button type="submit" class="btn btn-submit">Simpan</button>
+                <a href="dashboard.php" class="btn btn-back">Kembali</a>
+            </div>
         </form>
     </div>
 </body>

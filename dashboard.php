@@ -7,16 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit();
 }
 
-// Koneksi ke database
-$servername = "localhost";
-$username_db = "root";
-$password_db = "";
-$dbname = "klinikk";
-
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Mengambil data pasien
 $sql = "SELECT * FROM daftar_pasien"; // Pastikan tabel bernama `daftar_pasien`

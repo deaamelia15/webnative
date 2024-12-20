@@ -6,19 +6,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
     exit();
 }
-
-// Koneksi ke database
-$servername = "localhost";
-$username_db = "root";
-$password_db = "";
-$dbname = "klinikk";
-
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Periksa apakah parameter id_data ada di URL
 if (isset($_GET['id_data'])) {

@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 session_start();
 
 // Cek apakah pengguna sudah login
@@ -7,16 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit();
 }
 
-// Koneksi ke database
-$servername = "localhost";
-$username_db = "root";
-$password_db = "";
-$dbname = "klinikk";
-
-$conn = new mysqli($servername, $username_db, $password_db, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Mengambil data pasien
 $sql = "SELECT * FROM data_pasien";
@@ -139,7 +130,6 @@ if ($result) {
     <?php endif; ?>
 </div>
 <a href="edit_screening.php">Edit</a>
-<a href="dashboard.php">Kembali</a> <!-- Tombol Kembali di kiri atas -->
+<a href="dashboard.php">Kembali</a> 
 </body>
 </html>
- -->

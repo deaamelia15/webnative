@@ -1,11 +1,5 @@
 <?php
-// Koneksi database
-$conn = new mysqli("localhost", "root", "", "klinikk");
-
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi database gagal: " . $conn->connect_error);
-}
+include 'koneksi.php';
 
 // Ambil id_pasien dari URL
 $id_pasien = $_GET['id_pasien'];
@@ -156,7 +150,7 @@ if ($result->num_rows > 0) {
 
         <!-- Button to go back -->
         <div style="text-align: center;">
-            <a href="index.php" class="back-button">Kembali ke Home</a>
+            <a href="daftar_pasien.php" class="back-button">Kembali ke Home</a>
         </div>
     </div>
 

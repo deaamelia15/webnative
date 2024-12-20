@@ -34,6 +34,7 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
+
 }
 
 /* Text styling */
@@ -67,10 +68,16 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-align: center;
 }
 
 .btn-submit:hover {
     background-color: #800000;
+}
+
+.login {
+    position: relative;
+    left: 2vh;
 }
 </style>
 </head>
@@ -82,7 +89,7 @@ body {
             <form method="post" action="cek_login.php">
                 <input type="text" class="form-input" placeholder="Username" name="username" required>
                 <input type="password" class="form-input" placeholder="Password" name="password" required>
-                <input type="submit" class="btn-submit" value="Login">
+                <div class="login"><input type="submit" class="btn-submit" value="Login"></div>
             </form>
         </div>
     </div>

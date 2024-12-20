@@ -1,10 +1,18 @@
 <?php
-// Koneksi ke database
-$conn = mysqli_connect("localhost", "root", "", "klinikk");
+include 'koneksi.php';
 
-// Query ambil data dari tabel rekam_medis
-$query = "SELECT * FROM rekam_medis";
+// Query untuk mengambil data dari rekam_medis yang sudah dihubungkan dengan tabel daftar_pasien
+
+$query = "SELECT rm.id_pasien, dp.nama_pasien, rm.poli, rm.nama_dokter, rm.diagnosis, rm.tanggal_rekam 
+          FROM rekam_medis rm
+          JOIN daftar_pasien dp ON rm.id_pasien = dp.id_pasien";
+
 $result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die("Error dalam query: " . mysqli_error($conn));
+}
+
 ?>
 
 <!DOCTYPE html>
