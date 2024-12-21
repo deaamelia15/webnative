@@ -206,7 +206,7 @@ if (!$result) {
         <a href="index.php" class="back-button">Kembali</a>
         </form>
 
-        <h2>Data Pasien</h2>
+        <h2>Data Slip Pasien</h2>
         <div class="table-container">
             <table>
                 <tr>
