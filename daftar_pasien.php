@@ -167,6 +167,24 @@ if (!$result) {
         .table-container {
             overflow-x: auto; /* Untuk membuat tabel responsive */
         }
+
+        /* Tombol Kembali dengan warna merah */
+        .back-button {
+            background-color: #a40000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #800000; /* Warna merah lebih gelap */
+        }
     </style>
 </head>
 <body>
@@ -185,6 +203,7 @@ if (!$result) {
             <label>Alamat:</label>
             <textarea name="alamat" required></textarea>
             <button type="submit">Daftar</button>
+        <a href="index.php" class="back-button">Kembali</a>
         </form>
 
         <h2>Data Pasien</h2>

@@ -74,11 +74,11 @@ if (!$result) {
         }
 
         .btn-edit {
-            background-color: #28a745;
+            background-color: #dc3545;
         }
 
         .btn-edit:hover {
-            background-color: #218838;
+            background-color: #d11111;
         }
 
         .btn-delete {
@@ -86,7 +86,7 @@ if (!$result) {
         }
 
         .btn-delete:hover {
-            background-color: #c82333;
+            background-color: #c11111;
         }
 
         .btn-back {

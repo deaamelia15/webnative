@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($stmt->execute()) {
             $message = "Data pasien berhasil diperbarui.";
-            header("Location: dashboard.php");
+            header("Location: data_screening.php");
             exit();
         } else {
             $message = "Gagal memperbarui data pasien: " . $stmt->error;
@@ -59,9 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $message = "Semua field harus diisi.";
     }
 }
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="id">
@@ -72,13 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #fdf1f0; /* Latar belakang merah muda lembut */
+        background-color: #f8f8f8;
         margin: 0;
         padding: 0;
     }
 
     .container {
-        max-width: 600px;
+        max-width: 1200px;
         margin: 50px auto;
         background: #fff;
         padding: 20px;
@@ -88,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     h1 {
         text-align: center;
-        color: #cd1111; /* Warna merah tema utama */
+        color: #cd1111;
     }
 
     form {
@@ -100,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         color: #333;
     }
 
-    input[type="text"], input[type="date"] {
+    input[type="text"], input[type="date"], input[type="number"] {
         width: 100%;
         padding: 10px;
         margin: 10px 0;
@@ -111,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     input[type="submit"] {
         width: 100%;
         padding: 10px;
-        background-color: #cd1111; /* Warna merah tombol utama */
+        background-color: #cd1111;
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -121,21 +119,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     input[type="submit"]:hover {
-        background-color: #c0392b; /* Warna merah lebih gelap untuk hover */
+        background-color: #c0392b;
     }
 
     .message {
         text-align: center;
         margin: 20px 0;
         font-size: 14px;
-        color: #cd1111; /* Warna merah tema */
+        color: #cd1111;
     }
 
     .success {
-        color: #2ecc71; /* Warna hijau untuk pesan sukses */
+        color: #2ecc71;
     }
 </style>
-
 </head>
 <body>
     <div class="container">
@@ -149,27 +146,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <?php if (isset($patient)): ?>
             <form method="POST">
-    <label for="nik">NIK:</label>
-    <input type="text" id="nik" name="nik" value="<?= htmlspecialchars($patient['nik']) ?>" required>
+                <label for="nik">NIK:</label>
+                <input type="text" id="nik" name="nik" value="<?= htmlspecialchars($patient['nik']) ?>" required>
 
-    <label for="nama_pasien">Nama Pasien:</label>
-    <input type="text" id="nama_pasien" name="nama_pasien" value="<?= htmlspecialchars($patient['nama_pasien']) ?>" required>
+                <label for="nama_pasien">Nama Pasien:</label>
+                <input type="text" id="nama_pasien" name="nama_pasien" value="<?= htmlspecialchars($patient['nama_pasien']) ?>" required>
 
-    <label for="tanggal_lahir">Tanggal Lahir:</label>
-    <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="<?= htmlspecialchars($patient['tanggal_lahir']) ?>" required>
+                <label for="tanggal_lahir">Tanggal Lahir:</label>
+                <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="<?= htmlspecialchars($patient['tanggal_lahir']) ?>" required>
 
-    <label for="umur">Umur:</label>
-    <input type="text" id="umur" name="umur" value="<?= htmlspecialchars($patient['umur']) ?>" required>
+                <label for="umur">Umur:</label>
+                <input type="number" id="umur" name="umur" value="<?= htmlspecialchars($patient['umur']) ?>" required>
 
-    <label for="alamat">Alamat:</label>
-    <input type="text" id="alamat" name="alamat" value="<?= htmlspecialchars($patient['alamat']) ?>" required>
+                <label for="alamat">Alamat:</label>
+                <input type="text" id="alamat" name="alamat" value="<?= htmlspecialchars($patient['alamat']) ?>" required>
 
-    <label for="tanggal_daftar">Tanggal Daftar:</label>
-    <input type="date" id="tanggal_daftar" name="tanggal_daftar" value="<?= date('Y-m-d') ?>" readonly>
-
-    <input type="submit" value="Update">
-</form>
-
+                <input type="submit" value="Update">
+            </form>
         <?php else: ?>
             <p>Data tidak tersedia untuk diedit.</p>
         <?php endif; ?>

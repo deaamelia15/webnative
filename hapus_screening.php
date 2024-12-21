@@ -1,38 +1,32 @@
 <?php
-session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "db_klinik";
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: login.php");
-    exit();
+// Membuat koneksi
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Memeriksa koneksi
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-include 'koneksi.php';
 
-// Periksa apakah parameter id_data ada di URL
-if (isset($_GET['id_data'])) {
-    $id_data = $_GET['id_data'];
+// Memproses penghapusan data
+if (isset($_GET['nik'])) {
+    $nik = $conn->real_escape_string($_GET['nik']);
 
-    // Siapkan query untuk menghapus data pasien
-    $sql = "DELETE FROM data_pasien WHERE id_data = ?";
-    $stmt = $conn->prepare($sql);
+    // Menghapus data pasien berdasarkan NIK
+    $sql = "DELETE FROM data_pasien WHERE nik = '$nik'";
 
-    // Bind parameter
-    $stmt->bind_param("i", $id_data);
-
-    // Eksekusi query
-    if ($stmt->execute()) {
-        // Redirect kembali ke halaman data_screening.php setelah berhasil
-        header("Location: data_screening.php?message=success");
-        exit();
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('Data berhasil dihapus!'); window.location='data_screening.php';</script>";
     } else {
-        echo "Gagal menghapus data pasien.";
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
-
-    $stmt->close();
 } else {
-    echo "ID pasien tidak ditemukan.";
+    echo "NIK tidak ditemukan.";
 }
 
-// Tutup koneksi
 $conn->close();
 ?>

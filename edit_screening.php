@@ -1,163 +1,168 @@
 <?php
-session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "db_klinik";
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: login.php");
-    exit();
+// Membuat koneksi
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Memeriksa koneksi
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-include 'koneksi.php';
+// Memeriksa apakah ada data yang dikirim melalui metode GET
+if (isset($_GET['nik'])) {
+    $nik = $conn->real_escape_string($_GET['nik']);
 
-// Menangani pengambilan data berdasarkan ID pasien
-if (isset($_GET['id_data'])) {
-    $id_data = $_GET['id_data'];
-
-    // Mengambil data pasien berdasarkan ID
-    $sql = "SELECT * FROM data_pasien WHERE id_data = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id_data);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Mendapatkan data pasien berdasarkan NIK
+    $sql = "SELECT * FROM data_pasien WHERE nik = '$nik'";
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $patient = $result->fetch_assoc();
+        $data = $result->fetch_assoc();
     } else {
-        echo "Data pasien tidak ditemukan.";
-        exit();
+        echo "Data tidak ditemukan.";
+        exit;
     }
-} else {
-    echo "ID data pasien tidak ditemukan.";
-    exit();
 }
 
-// Menangani pengeditan data pasien
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nik = $_POST['nik'];
-    $nama_pasien = $_POST['nama_pasien'];
-    $berat_badan = $_POST['berat_badan'];
-    $tinggi_badan = $_POST['tinggi_badan'];
-    $tekanan_darah = $_POST['tekanan_darah'];
-    $keluhan = $_POST['keluhan'];
-    $diagnosis = $_POST['diagnosis'];
+// Memproses form edit jika data dikirim melalui metode POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nik = $conn->real_escape_string($_POST['nik']);
+    $nama_pasien = $conn->real_escape_string($_POST['nama_pasien']);
+    $berat_badan = $conn->real_escape_string($_POST['berat_badan']);
+    $tinggi_badan = $conn->real_escape_string($_POST['tinggi_badan']);
+    $tekanan_darah = $conn->real_escape_string($_POST['tekanan_darah']);
+    $keluhan = $conn->real_escape_string($_POST['keluhan']);
+    $diagnosis = $conn->real_escape_string($_POST['diagnosis']);
 
     // Update data pasien
-    $update_sql = "UPDATE data_pasien SET nik = ?, nama_pasien = ?, berat_badan = ?, tinggi_badan = ?, tekanan_darah = ?, keluhan = ?, diagnosis = ? WHERE id_data = ?";
-    $stmt = $conn->prepare($update_sql);
-    $stmt->bind_param("ssiiissi", $nik, $nama_pasien, $berat_badan, $tinggi_badan, $tekanan_darah, $keluhan, $diagnosis, $id_data);
+    $sql = "UPDATE data_pasien 
+            SET nama_pasien = '$nama_pasien', berat_badan = '$berat_badan', tinggi_badan = '$tinggi_badan', tekanan_darah = '$tekanan_darah', keluhan = '$keluhan', diagnosis = '$diagnosis' 
+            WHERE nik = '$nik'";
 
-    if ($stmt->execute()) {
-        header("Location: data_screening.php");
-        exit();
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('Data berhasil diperbarui!'); window.location='data_screening.php';</script>";
     } else {
-        echo "Gagal memperbarui data pasien.";
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
+
+$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Screening Pasien</title>
+    <title>Edit Data Screening</title>
     <style>
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            color: #333;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #b22222;
-            margin-bottom: 20px;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            border-radius: 8px;
+            margin: 40px auto;
+            background: #fff;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #cd1111;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin: 10px 0 5px;
             font-weight: bold;
         }
 
-        input[type="text"], input[type="number"], textarea {
+        input[type="text"], textarea {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 1em;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
         }
 
         button {
+            display: block;
             width: 100%;
-            padding: 10px;
-            background-color: #b22222;
+            padding: 12px;
+            background-color: #cd1111;
             color: white;
             border: none;
             border-radius: 4px;
-            font-size: 1em;
+            font-size: 16px;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: #c0392b;
+            background-color: #a00;
         }
 
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            text-decoration: none;
-            color: #b22222;
-            font-size: 0.9em;
-            text-align: center;
+        button:focus {
+            outline: none;
         }
 
-        a:hover {
-            color: #c0392b;
+        input[type="text"]:focus, textarea:focus {
+            border-color: #cd1111;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
 <body>
-<h1>Edit Data Screening Pasien</h1>
 
 <div class="container">
-    <form action="edit_screening.php?id_data=<?= $patient['id_data'] ?>" method="POST">
-        <label for="nik">NIK:</label>
-        <input type="text" name="nik" value="<?= htmlspecialchars($patient['nik']) ?>" required>
+    <h1>Edit Data Screening</h1>
+    <form method="POST">
+        <input type="hidden" name="nik" value="<?= htmlspecialchars($data['nik']) ?>">
+        <label for="nama_pasien">Nama Pasien</label>
+        <input type="text" id="nama_pasien" name="nama_pasien" value="<?= htmlspecialchars($data['nama_pasien']) ?>" required>
 
-        <label for="nama_pasien">Nama Pasien:</label>
-        <input type="text" name="nama_pasien" value="<?= htmlspecialchars($patient['nama_pasien']) ?>" required>
+        <label for="berat_badan">Berat Badan</label>
+        <input type="text" id="berat_badan" name="berat_badan" value="<?= htmlspecialchars($data['berat_badan']) ?>" required>
 
-        <label for="berat_badan">Berat Badan (kg):</label>
-        <input type="number" name="berat_badan" value="<?= htmlspecialchars($patient['berat_badan']) ?>" required>
+        <label for="tinggi_badan">Tinggi Badan</label>
+        <input type="text" id="tinggi_badan" name="tinggi_badan" value="<?= htmlspecialchars($data['tinggi_badan']) ?>" required>
 
-        <label for="tinggi_badan">Tinggi Badan (cm):</label>
-        <input type="number" name="tinggi_badan" value="<?= htmlspecialchars($patient['tinggi_badan']) ?>" required>
+        <label for="tekanan_darah">Tekanan Darah</label>
+        <input type="text" id="tekanan_darah" name="tekanan_darah" value="<?= htmlspecialchars($data['tekanan_darah']) ?>" required>
 
-        <label for="tekanan_darah">Tekanan Darah:</label>
-        <input type="text" name="tekanan_darah" value="<?= htmlspecialchars($patient['tekanan_darah']) ?>" required>
+        <label for="keluhan">Keluhan</label>
+        <textarea id="keluhan" name="keluhan" required><?= htmlspecialchars($data['keluhan']) ?></textarea>
 
-        <label for="keluhan">Keluhan:</label>
-        <textarea name="keluhan" required><?= htmlspecialchars($patient['keluhan']) ?></textarea>
-
-        <label for="diagnosis">Diagnosis:</label>
-        <textarea name="diagnosis" required><?= htmlspecialchars($patient['diagnosis']) ?></textarea>
+        <label for="diagnosis">Diagnosis</label>
+        <textarea id="diagnosis" name="diagnosis" required><?= htmlspecialchars($data['diagnosis']) ?></textarea>
 
         <button type="submit">Simpan Perubahan</button>
     </form>
-
-    <a href="data_screening.php">Kembali ke Data Screening</a>
 </div>
 
 </body>

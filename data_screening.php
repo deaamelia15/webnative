@@ -1,51 +1,29 @@
 <?php
-session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "db_klinik";
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: login.php");
-    exit();
+// Membuat koneksi
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Memeriksa koneksi
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-include 'koneksi.php';
-
-// Inisialisasi array untuk data pasien
-$patients = [];
-
-// Mengambil data pasien
-$sql = "SELECT * FROM data_pasien";
+// Mengambil data screening pasien
+$sql = "SELECT dp.nik AS nik_pasien, dp.berat_badan, dp.tinggi_badan, dp.tekanan_darah, dp.keluhan, dp.diagnosis, dp2.nama_pasien
+        FROM data_pasien dp
+        JOIN daftar_pasien dp2 ON dp.nik = dp2.nik";
 $result = $conn->query($sql);
 
-// Cek apakah query berhasil dan ada data pasien
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $patients[] = $row;
-    }
-} else {
-    $message = "Tidak ada data pasien.";
+// Memeriksa apakah query berhasil
+if (!$result) {
+    die("Query gagal: " . $conn->error);  // Menampilkan pesan kesalahan query jika gagal
 }
 
-// Menangani penghapusan data pasien
-if (isset($_GET['delete_id'])) {
-    $delete_id = $_GET['delete_id'];
-
-    // Menghapus data dari database
-    $delete_sql = "DELETE FROM data_pasien WHERE id_data = ?";
-    $stmt = $conn->prepare($delete_sql);
-
-    // Periksa apakah prepare berhasil
-    if ($stmt) {
-        $stmt->bind_param("i", $delete_id);
-        if ($stmt->execute()) {
-            header("Location: data_screening.php?message=success");
-            exit();
-        } else {
-            echo "Gagal menghapus data pasien.";
-        }
-    } else {
-        echo "Gagal mempersiapkan query: " . $conn->error;
-    }
-}
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -56,147 +34,142 @@ if (isset($_GET['delete_id'])) {
     <title>Data Screening Pasien</title>
     <style>
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
+            background-color: #f4f4f4;
             color: #333;
+            margin: 0;
             padding: 20px;
         }
 
         h1 {
-            text-align: center;
             color: #cd1111;
+            text-align: center;
+            font-size: 2.5em;
             margin-bottom: 20px;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: #fff;
-            border-radius: 8px;
+            max-width: 1000px;
+            margin: auto;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 10px solid #D32F2F;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 12px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
         th {
             background-color: #cd1111;
             color: white;
-            font-weight: bold;
         }
 
-        td {
-            border-top: 1px solid #ddd;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
         }
 
         .btn {
-            padding: 8px 12px;
-            border: none;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #cd1111;
             color: white;
             text-decoration: none;
-            border-radius: 4px;
-            font-size: 0.9em;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #a00;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 3px;
             cursor: pointer;
         }
 
-        .btn-delete {
-            background-color: #cd1111;
-        }
+        /* Edit button */
+.edit-btn {
+    background-color: #c11111; /* Merah */
+    color: white;
+}
 
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
+.edit-btn:hover {
+    background-color: #c62828; /* Merah lebih gelap saat hover */
+}
 
-        p {
-            text-align: center;
-            color: #e74c3c;
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
+/* Hapus button */
+.hapus-btn {
+    background-color: #c11111; /* Merah */
+    color: white;
+}
 
-        a {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #cd1111;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 20px;
-        }
+.hapus-btn:hover {
+    background-color: #c62828; /* Merah lebih gelap saat hover */
+}
 
-        a:hover {
-            background-color: #c0392b;
-        }
     </style>
 </head>
 <body>
-<h1>Hasil Data Screening Pasien</h1>
 
-<div class="container">
-    <?php if (!empty($patients)): ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>NIK</th>
-                    <th>Nama Pasien</th>
-                    <th>Berat Badan</th>
-                    <th>Tinggi Badan</th>
-                    <th>Tekanan Darah</th>
-                    <th>Keluhan</th>
-                    <th>Diagnosis</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($patients as $patient): ?>
+    <h1>Data Screening Pasien</h1>
+
+    <div class="container">
+        <?php if ($result->num_rows > 0): ?>
+            <table>
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($patient['nik']) ?></td>
-                        <td><?= htmlspecialchars($patient['nama_pasien']) ?></td>
-                        <td><?= htmlspecialchars($patient['berat_badan']) ?> kg</td>
-                        <td><?= htmlspecialchars($patient['tinggi_badan']) ?> cm</td>
-                        <td><?= htmlspecialchars($patient['tekanan_darah']) ?></td>
-                        <td><?= htmlspecialchars($patient['keluhan']) ?></td>
-                        <td><?= htmlspecialchars($patient['diagnosis']) ?></td>
-                        <td>
-                            <a href="data_screening.php?delete_id=<?= $patient['id_data']; ?>" 
-                               onclick="return confirm('Yakin ingin menghapus data pasien ini?');" 
-                               class="btn btn-delete">Hapus</a>
-                               <a href="edit_screening.php?id_data=<?= $patient['id_data']; ?>" 
-       onclick="return confirm('Yakin ingin mengedit data pasien ini?');" 
-       class="btn btn-edit">Edit</a>
-                        </td>
+                        <th>NIK</th>
+                        <th>Nama Pasien</th>
+                        <th>Berat Badan</th>
+                        <th>Tinggi Badan</th>
+                        <th>Tekanan Darah</th>
+                        <th>Keluhan</th>
+                        <th>Diagnosis</th>
+                        <th>Aksi</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p><?= isset($message) ? $message : "Data screening belum ada."; ?></p>
-    <?php endif; ?>
-</div>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['nik_pasien'] ?? 'Data tidak tersedia') ?></td>
+                            <td><?= htmlspecialchars($row['nama_pasien'] ?? 'Data tidak tersedia') ?></td>
+                            <td><?= htmlspecialchars($row['berat_badan'] ?? 'Data tidak tersedia') ?></td>
+                            <td><?= htmlspecialchars($row['tinggi_badan'] ?? 'Data tidak tersedia') ?></td>
+                            <td><?= htmlspecialchars($row['tekanan_darah'] ?? 'Data tidak tersedia') ?></td>
+                            <td><?= htmlspecialchars($row['keluhan'] ?? 'Data tidak tersedia') ?></td>
+                            <td><?= htmlspecialchars($row['diagnosis'] ?? 'Data tidak tersedia') ?></td>
+                            <td>
+                            <a href="edit_screening.php?nik=<?= urlencode($row['nik_pasien']) ?>" class="action-btn edit-btn">Edit</a>
+                            <a href="hapus_screening.php?nik=<?= urlencode($row['nik_pasien']) ?>" class="action-btn hapus-btn">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>Tidak ada data screening pasien.</p>
+        <?php endif; ?>
+    </div>
 
-<a href="dashboard.php">Kembali</a>
+    <div class="btn-container">
+        <a href="dashboard.php" class="btn">Kembali ke Dashboard</a>
+    </div>
+
 </body>
 </html>

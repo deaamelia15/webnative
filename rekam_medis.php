@@ -12,7 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               VALUES ('$id_pasien', '$poli', '$nama_dokter', '$diagnosis', '$tanggal_rekam')";
 
     if (mysqli_query($conn, $query)) {
-        echo "Data berhasil disimpan!";
+        // Redirect ke halaman hasil_rekam_medis.php setelah berhasil menyimpan data
+        header("Location: hasil_rekam_medis.php");
+        exit();  // Pastikan tidak ada kode lain yang dijalankan setelah redirect
     } else {
         echo "Error: " . mysqli_error($conn);
     }
@@ -26,91 +28,91 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Input Rekam Medis</title>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.form-container {
-    background: #fff;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
-}
+        .form-container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
 
-.form-container h2 {
-    margin-bottom: 20px;
-    color: #cd1111;
-    font-size: 24px;
-    text-align: center;
-}
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #cd1111;
+            font-size: 24px;
+            text-align: center;
+        }
 
-.form-group {
-    margin-bottom: 15px;
-}
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-.form-group input:focus,
-.form-group select:focus {
-    border-color: #b22222;
-    outline: none;
-}
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #b22222;
+            outline: none;
+        }
 
-.form-group button,
-.form-group a.btn-back {
-    background-color: #cd1111;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-}
+        .form-group button,
+        .form-group a.btn-back {
+            background-color: #cd1111;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
 
-.form-group button:hover,
-.form-group a.btn-back:hover {
-    background-color: #800000;
-}
+        .form-group button:hover,
+        .form-group a.btn-back:hover {
+            background-color: #800000;
+        }
 
-.form-group a.btn-back {
-    margin-left: 10px;
-}
+        .form-group a.btn-back {
+            margin-left: 10px;
+        }
 
-select {
-    background-color: #f8f8f8;
-    cursor: pointer;
-}
+        select {
+            background-color: #f8f8f8;
+            cursor: pointer;
+        }
 
-input[readonly] {
-    background-color: #f2f2f2;
-    cursor: not-allowed;
-}
+        input[readonly] {
+            background-color: #f2f2f2;
+            cursor: not-allowed;
+        }
 
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

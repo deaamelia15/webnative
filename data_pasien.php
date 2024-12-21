@@ -1,58 +1,53 @@
 <?php
-session_start();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "db_klinik";
 
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: login.php");
-    exit();
+// Membuat koneksi
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Memeriksa koneksi
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-include 'koneksi.php';
+// Menyiapkan query SQL untuk mengambil NIK dan nama pasien
+$sql = "SELECT nik, nama_pasien FROM daftar_pasien"; // Mengambil NIK dan Nama Pasien dari tabel daftar_pasien
+$result = $conn->query($sql);
 
-// Proses input data
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nik = isset($_POST['nik']) ? trim($_POST['nik']) : '';
-    $berat_badan = isset($_POST['berat_badan']) ? (float) trim($_POST['berat_badan']) : 0;
-    $tinggi_badan = isset($_POST['tinggi_badan']) ? (float) trim($_POST['tinggi_badan']) : 0;
-    $tekanan_darah = isset($_POST['tekanan_darah']) ? trim($_POST['tekanan_darah']) : '';
-    $keluhan = isset($_POST['keluhan']) ? trim($_POST['keluhan']) : '';
-    $diagnosis = isset($_POST['diagnosis']) ? trim($_POST['diagnosis']) : '';
+// Menangani form submit
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nik = $_POST['nik'];
+    $berat_badan = $_POST['berat_badan'];
+    $tinggi_badan = $_POST['tinggi_badan'];
+    $tekanan_darah = $_POST['tekanan_darah'];
+    $keluhan = $_POST['keluhan'];
+    $diagnosis = $_POST['diagnosis'];
 
-    if (!empty($nik) && $berat_badan > 0 && $tinggi_badan > 0 && !empty($tekanan_darah) && !empty($keluhan)) {
-        // Validasi apakah NIK ada di tabel daftar_pasien
-        $check_sql = "SELECT id_pasien, nama_pasien FROM daftar_pasien WHERE nik = ?";
-        $stmt = $conn->prepare($check_sql);
-        $stmt->bind_param("s", $nik);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $nama_pasien = $row['nama_pasien'];
-
-            // Simpan data screening ke tabel data_pasien
-            $sql = "INSERT INTO data_pasien (nik, nama_pasien, berat_badan, tinggi_badan, tekanan_darah, keluhan, diagnosis) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssdssss", $nik, $nama_pasien, $berat_badan, $tinggi_badan, $tekanan_darah, $keluhan, $diagnosis);
-            
-            if ($stmt->execute()) {
-                header("Location: data_screening.php");
-                exit();
-            } else {
-                $error_message = "Gagal menyimpan data: " . $stmt->error;
-            }
-        } else {
-            $error_message = "NIK tidak ditemukan di daftar pasien!";
-        }
-    } else {
-        $error_message = "Semua field wajib diisi dengan benar!";
+    // Menyiapkan query SQL untuk menyimpan data
+    $stmt = $conn->prepare("INSERT INTO data_pasien (nik, berat_badan, tinggi_badan, tekanan_darah, keluhan, diagnosis) VALUES (?, ?, ?, ?, ?, ?)");
+    if ($stmt === false) {
+        die('Prepare failed: ' . $conn->error);
     }
+
+    // Mengikat parameter
+    $stmt->bind_param("iiisss", $nik, $berat_badan, $tinggi_badan, $tekanan_darah, $keluhan, $diagnosis);
+
+    // Menjalankan query
+    if ($stmt->execute()) {
+        // Redirect ke halaman data_screening setelah data berhasil disimpan
+        header("Location: data_screening.php");
+        exit(); // Pastikan eksekusi script dihentikan setelah redirect
+    } else {
+        echo "Terjadi kesalahan: " . $stmt->error;
+    }
+
+    // Menutup statement
+    $stmt->close();
 }
 
-// Ambil data NIK dan nama pasien untuk dropdown
-$query = "SELECT nik, nama_pasien FROM daftar_pasien";
-$result = $conn->query($query);
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -62,48 +57,118 @@ $result = $conn->query($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Data Screening</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #fff; color: #333; margin: 0; padding: 20px; }
-        h1 { color: #cd1111; text-align: center; }
-        .form-container { max-width: 600px; margin: auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-left: 10px solid #D32F2F; }
-        .form-container h2 { color: #D32F2F; text-align: center; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; color: #cd1111; font-weight: bold; margin-bottom: 5px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        /* Style CSS Anda */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #cd1111;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 10px solid #D32F2F;
+        }
+
+        .form-container h2 {
+            color: #D32F2F;
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #cd1111;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
         .button-container {
             display: flex;
-            gap: 10px;
+            gap: 20px;
             justify-content: center;
             margin-top: 20px;
         }
+
         .btn {
             display: inline-block;
             text-align: center;
             font-size: 16px;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            border-radius: 6px;
             color: #fff;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s ease-in-out;
+            font-weight: bold;
+            text-decoration: none;
         }
+
         .btn-submit {
             background-color: #cd1111;
+            border: 2px solid #cd1111;
         }
+
         .btn-submit:hover {
             background-color: #B71C1C;
+            border-color: #B71C1C;
+            transform: translateY(-2px);
         }
+
+        .btn-submit:active {
+            background-color: #8E0000;
+            border-color: #8E0000;
+            transform: translateY(0);
+        }
+
         .btn-back {
-            background-color: #cd1111;
+            background-color: #a40000;
+            border: 2px solid #a40000;
         }
+
         .btn-back:hover {
-            background-color: #B71C1C;
+            background-color: #a40000;
+            border-color: #a40000;
+            transform: translateY(-2px);
+        }
+
+        .btn-back:active {
+            background-color: #a40000;
+            border-color: #a40000;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
     <h1>Input Data Screening</h1>
-    <?php if (isset($error_message)): ?>
-        <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
-    <?php endif; ?>
 
     <div class="form-container">
         <h2>Form Screening</h2>
